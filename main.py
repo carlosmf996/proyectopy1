@@ -25,17 +25,16 @@ except requests.exceptions.RequestException as e:
 
 #--------------------------MOSTRAMOS DATOS--------------------------
 
-
-nombreCerveza = str(input("Busca cerveza por su nombre"))
-cervezaEncontrada = " "
+# Pedimos los datos al usuario por consola y los mostramos
+nombreCerveza = str(input("Busca cerveza por su nombre: "))
+cervezaEncontrada = ""
 
 for cerveza in data:
     if cerveza.get("name") == nombreCerveza:
         cervezaEncontrada = cerveza
         break
 
-if cervezaEncontrada:
-    # Ahora 'objeto_deseado' contiene el objeto con el nombre buscado
+if cervezaEncontrada != "":
     print(cervezaEncontrada)
 else:
-    print(f"No se encontró ningún objeto con el nombre '{nombreCerveza}'")
+    print("No se encontró ningún objeto con el nombre ", nombreCerveza)
