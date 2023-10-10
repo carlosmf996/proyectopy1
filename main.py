@@ -55,7 +55,7 @@ def buscarNombre():     #Esta función permite la búsqueda de cervezas por nomb
         print("   NOTA", mostrarMedia)
 
     else:
-        print("No se encontró ningún objeto con el nombre ", nombreCerveza)
+        print("No se encontró la cerveza ", nombreCerveza)
 
     print("")
     continuar = input("¿Quieres buscar otra Cerveza?  S/N: ")    
@@ -65,6 +65,36 @@ def buscarNombre():     #Esta función permite la búsqueda de cervezas por nomb
     else:
        mostrarMenu()
 
+
+def buscarPrecio():     # Esta función permite buscar las cervezas menores al precio que indica el usuario
+
+    precio_maximo = float(input("Precio máximo a pagar: $"))
+    cervezas_guardadas = []
+
+    for cerveza in data:
+        precio_cerveza = float(cerveza.get("price").replace('$', ''))  # Convierte el precio en un número
+        if precio_cerveza <= precio_maximo:
+            cervezas_guardadas.append(cerveza)
+
+    if cervezas_guardadas:
+        for cerveza in cervezas_guardadas:              #Muestro las cervezas que ha encontrado el programa
+            print("")
+            print("NOMBRE: ",cerveza.get("name"))
+            print("PRECIO: ",cerveza.get("price"))
+            print("NOTA:")
+            print("   Nº RESEÑAS",cerveza.get("rating").get("reviews"))
+            media = cerveza.get("rating").get("average")
+            mostrarMedia = f"{media:.2f}"
+            print("   NOTA", mostrarMedia)
+    else:
+        print("No tenemos cervezas por ese precio")
+
+    print("")
+    continuar = input("¿Quieres buscar otra cerveza por precio? (S/N): ")
+    if continuar.upper() == "S":
+        buscarPrecio()
+    else:
+        mostrarMenu()
 
 
 
@@ -91,6 +121,10 @@ def mostrarMenu():          #Esta función muestra el menú por el que navegarem
 
     if numeroMenu == 1:
         buscarNombre()
+
+    if numeroMenu == 2:
+        buscarPrecio()
+
 
     if numeroMenu == 6:
         print("¡¡¡Vuelve pronto!!!")
