@@ -28,11 +28,15 @@ except requests.exceptions.RequestException as e:
 # Pedimos los datos al usuario por consola y los mostramos
 nombreCerveza = str(input("Busca cerveza por su nombre: "))
 cervezaEncontrada = ""
+encontrada = False
+indice=0
 
-for cerveza in data:
-    if cerveza.get("name") == nombreCerveza:
-        cervezaEncontrada = cerveza
-        break
+while indice<len(data) and encontrada == False:
+    if data[indice].get("name") == nombreCerveza:
+        cervezaEncontrada = data[indice]
+        encontrada=True
+    else:
+        indice+=1
 
 if cervezaEncontrada != "":
     print(cervezaEncontrada)
