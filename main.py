@@ -57,6 +57,14 @@ def buscarNombre():     #Esta función permite la búsqueda de cervezas por nomb
     else:
         print("No se encontró ningún objeto con el nombre ", nombreCerveza)
 
+    print("")
+    continuar = input("¿Quieres buscar otra Cerveza?  S/N: ")    
+
+    if continuar.upper() == "S":
+        buscarNombre()
+    else:
+       mostrarMenu()
+
 
 
 
