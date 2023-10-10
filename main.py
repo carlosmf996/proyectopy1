@@ -26,13 +26,14 @@ except requests.exceptions.RequestException as e:
 #--------------------------MOSTRAMOS DATOS--------------------------
 
 # Pedimos los datos al usuario por consola y los mostramos
-nombreCerveza = str(input("Busca cerveza por su nombre: "))
+nombreCerveza = str(input("Busca cerveza por su nombre: ")).upper()
 cervezaEncontrada = ""
 encontrada = False
 indice=0
 
+# Hacer búsquedas con un FOR es bastante poco eficaz por lo que busco con un WHILE
 while indice<len(data) and encontrada == False:
-    if data[indice].get("name") == nombreCerveza:
+    if data[indice].get("name").upper() == nombreCerveza:
         cervezaEncontrada = data[indice]
         encontrada=True
     else:
