@@ -40,6 +40,14 @@ while indice<len(data) and encontrada == False:
         indice+=1
 
 if cervezaEncontrada != "":
-    print(cervezaEncontrada)
+    print("NOMBRE: ",cervezaEncontrada.get("name"))
+    print("PRECIO: ",cervezaEncontrada.get("price"))
+    print("NOTA:")
+    print("   Nº RESEÑAS",cervezaEncontrada.get("rating").get("reviews"))
+    media = cervezaEncontrada.get("rating").get("average")
+    mostrarMedia = f"{media:.2f}"
+    print("   NOTA", mostrarMedia)
+
+
 else:
     print("No se encontró ningún objeto con el nombre ", nombreCerveza)
