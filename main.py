@@ -68,13 +68,10 @@ def buscarNombre():     #Esta función permite la búsqueda de cervezas por nomb
 
 def buscarPrecio():     # Esta función permite buscar las cervezas menores al precio que indica el usuario
 
-
-    precio_maximo = 0
     cervezas_guardadas = []
+    precio_maximo = 0  
 
-    precio_maximo = 0  # Inicializamos precio_maximo con un valor diferente de 0 para entrar en el bucle
-
-    while precio_maximo == 0:
+    while precio_maximo == 0:       #Con este while controlamos que el usuario introduzca un float/int
         try:
             precioIntroducido = float(input("Precio máximo a pagar: $"))
             precio_maximo = precioIntroducido  # Asignamos el valor a precio_maximo
@@ -82,11 +79,11 @@ def buscarPrecio():     # Esta función permite buscar las cervezas menores al p
             print("Introduzca un valor correcto")
 
 
-
-    for cerveza in data:
+    for cerveza in data:  #Este bucle recorre todo el JSON guardando en nuestro nuevo diccionario las cervezas que e adaptan al precio dado
         precio_cerveza = float(cerveza.get("price").replace('$', ''))  # Convierte el precio en un número
         if precio_cerveza <= precio_maximo:
             cervezas_guardadas.append(cerveza)
+
 
     if cervezas_guardadas:
         for cerveza in cervezas_guardadas:              #Muestro las cervezas que ha encontrado el programa
@@ -104,11 +101,46 @@ def buscarPrecio():     # Esta función permite buscar las cervezas menores al p
     print("")
     continuar = input("¿Quieres comparar otro precio? (S/N): ")
     if continuar.upper() == "S":
-        buscarPrecio()
+        buscarPrecio()                  #Pequeña sentencia para controlar el movimiento por el menú
     else:
         mostrarMenu()
 
 
+def buscarNota():
+
+    cervezasGuardadasNota = []
+    notaBuscar = 0
+
+    while notaBuscar == 0:       #Con este while controlamos que el usuario introduzca un float/int
+        try:
+            notaIntroducida = float(input("Nota media a consultar: "))
+            notaBuscar = notaIntroducida  # Asignamos el valor a notaBuscar
+        except ValueError:
+            print("Introduzca una nota correcto")
+
+    for cerveza in data:
+        if notaBuscar < cerveza.get("average").get("rating"):
+            cervezasGuardadasNota.append(cerveza)
+
+    if cervezasGuardadasNota:
+        for cerveza in cervezasGuardadasNota:              #Muestro las cervezas que ha encontrado el programa
+            print("")
+            print("NOMBRE: ",cerveza.get("name"))
+            print("PRECIO: ",cerveza.get("price"))
+            print("NOTA:")
+            print("   Nº RESEÑAS",cerveza.get("rating").get("reviews"))
+            media = cerveza.get("rating").get("average")
+            mostrarMedia = f"{media:.2f}"
+            print("   NOTA", mostrarMedia)
+        else:
+            print("No tenemos cervezas por ese precio")                
+
+    print("")
+    continuar = input("¿Quieres comparar otra nota? (S/N): ")
+    if continuar.upper() == "S":
+        buscarPrecio()                  #Pequeña sentencia para controlar el movimiento por el menú
+    else:
+        mostrarMenu()
 
 
 def mostrarMenu():          #Esta función muestra el menú por el que navegaremos
