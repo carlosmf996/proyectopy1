@@ -85,7 +85,7 @@ def buscarPrecio():     # Esta función permite buscar las cervezas menores al p
             cervezas_guardadas.append(cerveza)
 
 
-    if cervezas_guardadas:
+    if cervezas_guardadas != []:
         for cerveza in cervezas_guardadas:              #Muestro las cervezas que ha encontrado el programa
             print("")
             print("NOMBRE: ",cerveza.get("name"))
@@ -95,10 +95,11 @@ def buscarPrecio():     # Esta función permite buscar las cervezas menores al p
             media = cerveza.get("rating").get("average")
             mostrarMedia = f"{media:.2f}"
             print("   NOTA", mostrarMedia)
-        else:
-            print("No tenemos cervezas por ese precio")
+    else:
+        print("No tenemos cervezas por ese precio")
 
     print("")
+
     continuar = input("¿Quieres comparar otro precio? (S/N): ")
     if continuar.upper() == "S":
         buscarPrecio()                  #Pequeña sentencia para controlar el movimiento por el menú
@@ -116,13 +117,13 @@ def buscarNota():
             notaIntroducida = float(input("Nota media a consultar: "))
             notaBuscar = notaIntroducida  # Asignamos el valor a notaBuscar
         except ValueError:
-            print("Introduzca una nota correcto")
+            print("Introduzca una nota correcta")
 
     for cerveza in data:
-        if notaBuscar < cerveza.get("average").get("rating"):
+        if notaBuscar <= cerveza.get("rating").get("average"):      #Comprobamos que existan coincidencias
             cervezasGuardadasNota.append(cerveza)
 
-    if cervezasGuardadasNota:
+    if cervezasGuardadasNota != []:
         for cerveza in cervezasGuardadasNota:              #Muestro las cervezas que ha encontrado el programa
             print("")
             print("NOMBRE: ",cerveza.get("name"))
@@ -132,15 +133,54 @@ def buscarNota():
             media = cerveza.get("rating").get("average")
             mostrarMedia = f"{media:.2f}"
             print("   NOTA", mostrarMedia)
-        else:
-            print("No tenemos cervezas por ese precio")                
+    else:
+        print("No tenemos cervezas por ese precio")                
 
     print("")
+
     continuar = input("¿Quieres comparar otra nota? (S/N): ")
     if continuar.upper() == "S":
-        buscarPrecio()                  #Pequeña sentencia para controlar el movimiento por el menú
+        buscarNota()                  #Pequeña sentencia para controlar el movimiento por el menú
     else:
         mostrarMenu()
+
+
+def mostrarOrdenadasPrecio():
+
+    mostrarOrdenadas = []
+
+    for cerveza in data:
+            mostrarOrdenadas.append(cerveza)
+
+    mostrarOrdenadas = sorted(data, key=lambda x: float(x["price"].strip("$")))
+
+    for cervecita in mostrarOrdenadas:              #Muestro las cervezas ordenadas
+            print("")
+            print("NOMBRE: ",cervecita.get("name"))
+            print("PRECIO: ",cervecita.get("price"))
+            print("NOTA:")
+            print("   Nº RESEÑAS",cervecita.get("rating").get("reviews"))
+            media = cervecita.get("rating").get("average")
+            mostrarMedia = f"{media:.2f}"
+            print("   NOTA", mostrarMedia)
+
+    inverso = input("¿Quieres ordenarlas de manera inversa? (S/N): ")
+    if inverso.upper() == "S":
+        mostrarOrdenadas = sorted(data, key=lambda x: float(x["price"].strip("$")),reverse=True)
+
+        for cervecitaInv in mostrarOrdenadas:              #Muestro las cervezas ordenadas
+            print("")
+            print("NOMBRE: ",cervecitaInv.get("name"))
+            print("PRECIO: ",cervecitaInv.get("price"))
+            print("NOTA:")
+            print("   Nº RESEÑAS",cervecitaInv.get("rating").get("reviews"))
+            media = cervecitaInv.get("rating").get("average")
+            mostrarMedia = f"{media:.2f}"
+            print("   NOTA", mostrarMedia)
+    else:
+        mostrarMenu()
+
+    mostrarMenu()          
 
 
 def mostrarMenu():          #Esta función muestra el menú por el que navegaremos
@@ -170,6 +210,11 @@ def mostrarMenu():          #Esta función muestra el menú por el que navegarem
     if numeroMenu == 2:
         buscarPrecio()
 
+    if numeroMenu == 3:
+        buscarNota()  
+
+    if numeroMenu == 4:
+        mostrarOrdenadasPrecio()   
 
     if numeroMenu == 6:
         print("¡¡¡Vuelve pronto!!!")
