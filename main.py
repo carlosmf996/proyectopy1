@@ -1,5 +1,5 @@
 import requests
-
+import math
 
 #--------------------------CARGAMOS EL JSON--------------------------
 
@@ -68,8 +68,20 @@ def buscarNombre():     #Esta función permite la búsqueda de cervezas por nomb
 
 def buscarPrecio():     # Esta función permite buscar las cervezas menores al precio que indica el usuario
 
-    precio_maximo = float(input("Precio máximo a pagar: $"))
+
+    precio_maximo = 0
     cervezas_guardadas = []
+
+    precio_maximo = 0  # Inicializamos precio_maximo con un valor diferente de 0 para entrar en el bucle
+
+    while precio_maximo == 0:
+        try:
+            precioIntroducido = float(input("Precio máximo a pagar: $"))
+            precio_maximo = precioIntroducido  # Asignamos el valor a precio_maximo
+        except ValueError:
+            print("Introduzca un valor correcto")
+
+
 
     for cerveza in data:
         precio_cerveza = float(cerveza.get("price").replace('$', ''))  # Convierte el precio en un número
@@ -86,15 +98,16 @@ def buscarPrecio():     # Esta función permite buscar las cervezas menores al p
             media = cerveza.get("rating").get("average")
             mostrarMedia = f"{media:.2f}"
             print("   NOTA", mostrarMedia)
-    else:
-        print("No tenemos cervezas por ese precio")
+        else:
+            print("No tenemos cervezas por ese precio")
 
     print("")
-    continuar = input("¿Quieres buscar otra cerveza por precio? (S/N): ")
+    continuar = input("¿Quieres comparar otro precio? (S/N): ")
     if continuar.upper() == "S":
         buscarPrecio()
     else:
         mostrarMenu()
+
 
 
 
