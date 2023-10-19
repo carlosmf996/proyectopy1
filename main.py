@@ -9,15 +9,15 @@ url = 'https://api.sampleapis.com/beers/ale'
 
 try:
     # Guardamos la URL en una variable
-    response = requests.get(url)
+    respuesta = requests.get(url)
 
     # Comprobamos si la URL está operativa, si no, devuelve un error
-    if response.status_code == 200:
-        data = response.json()
+    if respuesta.status_code == 200:
+        data = respuesta.json()
 
     # Aquí se muestra el error que devuelve la API en caso de fallar
     else:
-        print('Error al hacer la solicitud a la API:', response.status_code)
+        print('Error al hacer la solicitud a la API:', respuesta.status_code)
 
 except requests.exceptions.RequestException as e:
     print('Error de conexión:', e)          # Envolvemos todo en un TRY - EXCEPT para contemplar errores
@@ -96,6 +96,7 @@ def buscarPrecio():     # Esta función permite buscar las cervezas menores al p
             mostrarMedia = f"{media:.2f}"
             print("   NOTA", mostrarMedia)
     else:
+        print("")
         print("No tenemos cervezas por ese precio")
 
     print("")
@@ -134,7 +135,7 @@ def buscarNota():
             mostrarMedia = f"{media:.2f}"
             print("   NOTA", mostrarMedia)
     else:
-        print("No tenemos cervezas por ese precio")                
+        print("No tenemos cervezas con esa nota")                
 
     print("")
 
@@ -145,14 +146,14 @@ def buscarNota():
         mostrarMenu()
 
 
-def mostrarOrdenadasPrecio():
+def mostrarOrdenadasPrecio():      #Con esta función mostramos las cervezas ordenadas por Precio
 
     mostrarOrdenadas = []
 
     for cerveza in data:
             mostrarOrdenadas.append(cerveza)
 
-    mostrarOrdenadas = sorted(data, key=lambda x: float(x["price"].strip("$")))
+    mostrarOrdenadas = sorted(data, key=lambda x: float(x["price"].strip("$"))) #Ordeno los registros de la tabla
 
     for cervecita in mostrarOrdenadas:              #Muestro las cervezas ordenadas
             print("")
@@ -166,7 +167,7 @@ def mostrarOrdenadasPrecio():
 
     inverso = input("¿Quieres ordenarlas de manera inversa? (S/N): ")
     if inverso.upper() == "S":
-        mostrarOrdenadas = sorted(data, key=lambda x: float(x["price"].strip("$")),reverse=True)
+        mostrarOrdenadas = sorted(data, key=lambda x: float(x["price"].strip("$")),reverse=True) #Ordeno los registros de la tabla de manera inversa
 
         for cervecitaInv in mostrarOrdenadas:              #Muestro las cervezas ordenadas
             print("")
@@ -180,8 +181,81 @@ def mostrarOrdenadasPrecio():
     else:
         mostrarMenu()
 
-    mostrarMenu()          
+    print("")
+    print("Cervecas ordenadas de manera inversa")
+    print("")
+    print("Volviendo al menú...")
+    print("")
 
+    mostrarMenu()     
+
+
+def mostrarOrdenadasNotaMedia():    #Esta función muestra las cervezas ordenadas por nota media
+
+    mostrarOrdenadasNota = []
+
+    for cerveza in data:
+            mostrarOrdenadasNota.append(cerveza)
+
+    mostrarOrdenadasNota = sorted(data, key=lambda x: float(x["rating"]["average"]))  #Ordeno las cervezas por nota
+
+    for cervecita in mostrarOrdenadasNota:              #Muestro las cervezas ordenadas
+            print("")
+            print("NOMBRE: ",cervecita.get("name"))
+            print("PRECIO: ",cervecita.get("price"))
+            print("NOTA:")
+            print("   Nº RESEÑAS",cervecita.get("rating").get("reviews"))
+            media = cervecita.get("rating").get("average")
+            mostrarMedia = f"{media:.2f}"
+            print("   NOTA", mostrarMedia)
+
+    inversoNota = input("¿Quieres ordenarlas de manera inversa? (S/N): ")
+    if inversoNota.upper() == "S":
+        mostrarOrdenadasNota = sorted(data, key=lambda x: float(x["rating"]["average"]),reverse=True)  #Ordeno las cervezas por nota inversa
+        print("Cervecas ordenadas de manera inversa")
+
+        for cervecitaInv in mostrarOrdenadasNota:              #Muestro las cervezas en orden inverso
+            print("")
+            print("NOMBRE: ",cervecitaInv.get("name"))
+            print("PRECIO: ",cervecitaInv.get("price"))
+            print("NOTA:")
+            print("   Nº RESEÑAS",cervecitaInv.get("rating").get("reviews"))
+            media = cervecitaInv.get("rating").get("average")
+            mostrarMedia = f"{media:.2f}"
+            print("   NOTA", mostrarMedia)
+    else:
+        mostrarMenu()
+
+    print("")
+    print("Cervecas ordenadas de manera inversa")
+    print("")
+    print("Volviendo al menú...")
+    print("")
+
+    mostrarMenu()    
+
+def mostrarTodas():         #Esta función muestra todas las cervezas del JSON
+
+    mostrarCervezas = []
+
+    for cervezas in data:
+        mostrarCervezas.append(cervezas)
+
+    for cervezota in mostrarCervezas:              #Muestro las cervezas
+            print("")
+            print("NOMBRE: ",cervezota.get("name"))
+            print("PRECIO: ",cervezota.get("price"))
+            print("NOTA:")
+            print("   Nº RESEÑAS",cervezota.get("rating").get("reviews"))
+            media = cervezota.get("rating").get("average")
+            mostrarMedia = f"{media:.2f}"
+            print("   NOTA", mostrarMedia)
+
+    print("")
+    print("Volviendo al menú...")
+    print("")
+
+    mostrarMenu()
 
 def mostrarMenu():          #Esta función muestra el menú por el que navegaremos
 
@@ -193,12 +267,13 @@ def mostrarMenu():          #Esta función muestra el menú por el que navegarem
     print("3.- Búsqueda por nota media")
     print("4.- Cervezas ordenadas por precio")
     print("5.- Cervezas ordenadas por nota media")
-    print("6.- SALIR")
+    print("6.- Mostrar todas las cervezas")
+    print("7.- SALIR")
     print("")
 
     numeroMenu = int(input("Introduzca opción del menú: "))
 
-    if numeroMenu > 6 or numeroMenu < 1:            #Controlamos que el número introducido sea correcto
+    if numeroMenu > 7 or numeroMenu < 1:            #Controlamos que el número introducido sea correcto
         print("")
         print("INTRODUZCA UN NÚMERO CORRECTO")
         print("")
@@ -216,7 +291,13 @@ def mostrarMenu():          #Esta función muestra el menú por el que navegarem
     if numeroMenu == 4:
         mostrarOrdenadasPrecio()   
 
+    if numeroMenu == 5:
+        mostrarOrdenadasNotaMedia()
+
     if numeroMenu == 6:
+        mostrarTodas()
+
+    if numeroMenu == 7:
         print("¡¡¡Vuelve pronto!!!")
         exit        
 
